@@ -9,8 +9,6 @@ import java.util.stream.Stream;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 class Day1Test {
-
-
     private static Stream<Arguments> partOneCaseProvider() {
         return Stream.of(
                 Arguments.of("(())", 0),
