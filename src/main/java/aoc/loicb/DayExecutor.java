@@ -23,7 +23,7 @@ public record DayExecutor<I>(InputTransformer<I> transformer) {
         Stopwatch endPart2 = timerPart2.stop();
         System.out.println("result part one: " + resultPart1);
         System.out.println("result part two: " + resultPart2);
-        System.out.printf("| [%s](./src/main/java/%s) | %s | %s |",
+        System.out.printf("| [%s](./src/main/java/%s.java) | %s | %s |",
                 day.getClass().getSimpleName().replace("Day", "Day "),
                 day.getClass().getCanonicalName().replaceAll("\\.", "/"),
                 endPart1,
