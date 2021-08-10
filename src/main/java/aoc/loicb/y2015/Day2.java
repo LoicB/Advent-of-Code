@@ -48,18 +48,7 @@ public class Day2 implements Day<Box[], Integer> {
     }
 }
 
-class Box {
-    private final int length;
-    private final int width;
-    private final int height;
-
-    Box(int length,
-        int width,
-        int height) {
-        this.length = length;
-        this.width = width;
-        this.height = height;
-    }
+record Box(int length, int width, int height) {
 
     public int getLength() {
         return length;
