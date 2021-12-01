@@ -1,3 +1,9 @@
+# 2021
+
+| Day                                                | Part One | Part Two |
+| -------------------------------------------------- | -------- | -------- |
+| [Day 1](./src/main/java/aoc/loicb/y2021/Day1.java) | 345.7 μs | 759.2 μs |
+
 # 2015
 
 | Day                                                | Part One | Part Two |
