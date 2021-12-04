@@ -48,24 +48,6 @@ class Day3Test {
         );
     }
 
-//    private static Stream<Arguments> mostCommonBitCaseProvider() {
-//        return Stream.of(
-//                Arguments.of(SAMPLE,0, '1'),
-//                Arguments.of(SAMPLE,1, '0'),
-//                Arguments.of(SAMPLE,2, '1'),
-//                Arguments.of(SAMPLE,3, '1'),
-//                Arguments.of(SAMPLE,4, '0')
-//        );
-//    }
-//
-//    @ParameterizedTest
-//    @MethodSource("mostCommonBitCaseProvider")
-//    void mostCommonBit(String[] binaries, int index, int expectedMostCommonBit) {
-//        Day3 day = new Day3();
-//        int numberOfIncreases = day.mostCommonBit(binaries, index);
-//        assertEquals(expectedMostCommonBit, numberOfIncreases);
-//    }
-
     private static Stream<Arguments> co2ScrubberRatingCaseProvider() {
         return Stream.of(
                 Arguments.of(SAMPLE, 10)
