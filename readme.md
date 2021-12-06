@@ -7,6 +7,7 @@
 | [Day 3](./src/main/java/aoc/loicb/y2021/Day3.java) | 2.182 ms | 5.123 ms |
 | [Day 4](./src/main/java/aoc/loicb/y2021/Day4.java) | 31.04 ms | 151.5 ms |
 | [Day 5](./src/main/java/aoc/loicb/y2021/Day5.java) | 85.80 ms | 87.24 ms |
+| [Day 6](./src/main/java/aoc/loicb/y2021/Day6.java) | 1.294 ms | 91.10 μs |
 
 # 2015
 
