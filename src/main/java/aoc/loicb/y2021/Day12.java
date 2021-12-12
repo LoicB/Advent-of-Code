@@ -5,7 +5,6 @@ import aoc.loicb.DayExecutor;
 import aoc.loicb.InputToObjectList;
 
 import java.util.*;
-import java.util.stream.Collectors;
 
 public class Day12 implements Day<List<Connection>, Integer> {
 
@@ -27,17 +26,18 @@ public class Day12 implements Day<List<Connection>, Integer> {
     }
 
     private Cave buildCaveNetwork(List<Connection> connections) {
-        Cave start = null;
         Map<String, Cave> idToCave = new HashMap<>();
         for (Connection connection : connections) {
             Cave cave1 = getCave(connection.from(), idToCave);
             Cave cave2 = getCave(connection.to(), idToCave);
-            cave1.addConnectedCave(cave2);
-            cave2.addConnectedCave(cave1);
-            if (cave1.isStart()) start = cave1;
-            if (cave2.isStart()) start = cave2;
+            if (canMove(cave1, cave2)) cave1.addConnectedCave(cave2);
+            if (canMove(cave2, cave1)) cave2.addConnectedCave(cave1);
         }
-        return start;
+        return idToCave.get("start");
+    }
+
+    private boolean canMove(Cave from, Cave to) {
+        return !to.isStart() && !from.isEnd();
     }
 
     private Cave getCave(String id, Map<String, Cave> idToCave) {
@@ -58,7 +58,7 @@ public class Day12 implements Day<List<Connection>, Integer> {
         if (startingCave.isEnd()) return 1;
         for (Cave cave : startingCave.getConnectedCaves()) {
             int cavesAllowance = smallCavesAllowance;
-            if (cave.isBig() || !traversedCaves.contains(cave.getId()) || (!cave.isStartOrEnd() && cavesAllowance-- > 0)) {
+            if (cave.isBig() || !traversedCaves.contains(cave.getId()) || cavesAllowance-- > 0) {
                 Set<String> newTraversed = new HashSet<>(traversedCaves);
                 newTraversed.add(cave.getId());
                 number += calculateNumberOfPathNew(cave, newTraversed, cavesAllowance);
@@ -89,10 +89,6 @@ class Cave {
         return id.toUpperCase().equals(id);
     }
 
-    public boolean isStartOrEnd() {
-        return isStart() || isEnd();
-    }
-
     public boolean isStart() {
         return "start".equals(id);
     }
@@ -107,13 +103,5 @@ class Cave {
 
     public List<Cave> getConnectedCaves() {
         return connectedCaves;
-    }
-
-    @Override
-    public String toString() {
-        return "Cave{" +
-                "id='" + id + '\'' +
-                ", connectedCaves=" + connectedCaves.stream().map(cave -> cave.id).collect(Collectors.toList()) +
-                '}';
     }
 }
