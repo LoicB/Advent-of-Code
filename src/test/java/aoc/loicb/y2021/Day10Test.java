@@ -95,9 +95,9 @@ class Day10Test {
 
     @ParameterizedTest
     @MethodSource("partTwoCaseProvider")
-    void partTwo(String[] navigationSubsystem, int expectedScore) {
+    void partTwo(String[] navigationSubsystem, long expectedScore) {
         Day10 day = new Day10();
-        int score = day.partTwo(navigationSubsystem);
+        long score = day.partTwo(navigationSubsystem);
         assertEquals(expectedScore, score);
     }
 
