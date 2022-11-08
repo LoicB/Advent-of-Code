@@ -7,21 +7,21 @@ import aoc.loicb.InputTransformer;
 import java.util.HashMap;
 import java.util.Map;
 
-public class Day20 implements Day<aoc.loicb.y2021.Day20Input, Integer> {
+public class Day20 implements Day<Day20Input, Integer> {
     private final static int DIFFERENCE = 200;
 
     public static void main(String[] args) {
-        DayExecutor<aoc.loicb.y2021.Day20Input> de = new DayExecutor<>(new aoc.loicb.y2021.InputToImage());
-        de.execute(new aoc.loicb.y2021.Day20());
+        DayExecutor<Day20Input> de = new DayExecutor<>(new InputToImage());
+        de.execute(new Day20());
     }
 
     @Override
-    public Integer partOne(aoc.loicb.y2021.Day20Input input) {
+    public Integer partOne(Day20Input input) {
         return solve(input, 2);
     }
 
 
-    private int solve(aoc.loicb.y2021.Day20Input input, int numberOfRound) {
+    private int solve(Day20Input input, int numberOfRound) {
         Map<Point, Character> resultImage = input.image();
         for (int i = 0; i < numberOfRound; i++) {
             resultImage = enhanceImage(input.imageEnhancementAlgorithm(), resultImage);
@@ -91,7 +91,7 @@ public class Day20 implements Day<aoc.loicb.y2021.Day20Input, Integer> {
     }
 
     @Override
-    public Integer partTwo(aoc.loicb.y2021.Day20Input input) {
+    public Integer partTwo(Day20Input input) {
         return solve(input, 50);
     }
 }
@@ -99,10 +99,10 @@ public class Day20 implements Day<aoc.loicb.y2021.Day20Input, Integer> {
 record Day20Input(char[] imageEnhancementAlgorithm, Map<Point, Character> image) {
 }
 
-class InputToImage implements InputTransformer<aoc.loicb.y2021.Day20Input> {
+class InputToImage implements InputTransformer<Day20Input> {
 
     @Override
-    public aoc.loicb.y2021.Day20Input transform(String rawInput) {
+    public Day20Input transform(String rawInput) {
         String[] inputLines = rawInput.split("\\r?\\n");
         Map<Point, Character> image = new HashMap<>();
         char[] imageEnhancementAlgorithm = inputLines[0].toCharArray();
@@ -111,7 +111,7 @@ class InputToImage implements InputTransformer<aoc.loicb.y2021.Day20Input> {
                 image.put(new Point(i - 2, j), inputLines[i].charAt(j));
             }
         }
-        return new aoc.loicb.y2021.Day20Input(imageEnhancementAlgorithm, image);
+        return new Day20Input(imageEnhancementAlgorithm, image);
     }
 
 }
