@@ -1,3 +1,9 @@
+# 2022
+
+| Day                                                | Part One | Part Two |
+|----------------------------------------------------|----------|----------|
+| [Day 6](./src/main/java/aoc/loicb/y2022/Day6.java) | 14.77 ms | 13.38 ms |
+
 # 2021
 
 | Day                                                  | Part One | Part Two |
