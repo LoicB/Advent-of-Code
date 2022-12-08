@@ -5,8 +5,11 @@
 | [Day 1](./src/main/java/aoc/loicb/y2022/Day1.java) | 23.63 ms | 5.607 ms |
 | [Day 2](./src/main/java/aoc/loicb/y2022/Day2.java) | 25.69 ms | 5.099 ms |
 | [Day 3](./src/main/java/aoc/loicb/y2022/Day3.java) | 18.22 ms | 7.213 ms |
+| [Day 4](./src/main/java/aoc/loicb/y2022/Day4.java) | 22.18 ms | 5.661 ms |
+| [Day 5](./src/main/java/aoc/loicb/y2022/Day5.java) | 14.98 ms | 6.014 ms |
 | [Day 6](./src/main/java/aoc/loicb/y2022/Day6.java) | 14.77 ms | 13.38 ms |
 | [Day 7](./src/main/java/aoc/loicb/y2022/Day7.java) | 21.01 ms | 8.107 ms |
+| [Day 8](./src/main/java/aoc/loicb/y2022/Day8.java) | 7.675 ms | 5.466 ms |
 
 # 2021
 
