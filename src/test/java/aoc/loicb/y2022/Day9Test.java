@@ -30,7 +30,7 @@ class Day9Test {
         );
     }
 
-    private List<Motion> prepareInput() {
+    private List<Motion> prepareInputPart1() {
         return List.of(
                 new Motion('R', 4),
                 new Motion('U', 4),
@@ -46,7 +46,7 @@ class Day9Test {
     @Test
     void partOne() {
         var day = new Day9();
-        var input = prepareInput();
+        var input = prepareInputPart1();
         var numberOfPositions = day.partOne(input);
         assertEquals(13, numberOfPositions);
     }
@@ -59,9 +59,8 @@ class Day9Test {
         assertEquals(expectedNewHead, newHead);
     }
 
-    @Test
-    void partTwo() {
-        var input = List.of(
+    private List<Motion> prepareInputPart2() {
+        return List.of(
                 new Motion('R', 5),
                 new Motion('U', 8),
                 new Motion('L', 8),
@@ -71,6 +70,11 @@ class Day9Test {
                 new Motion('L', 25),
                 new Motion('U', 20)
         );
+    }
+
+    @Test
+    void partTwo() {
+        var input = prepareInputPart2();
         var day = new Day9();
         var numberOfPositions = day.partTwo(input);
         assertEquals(36, numberOfPositions);
