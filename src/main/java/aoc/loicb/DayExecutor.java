@@ -11,7 +11,23 @@ public record DayExecutor<I>(InputTransformer<I> transformer) {
 
     public void execute(Day<I, ?> day) {
         String rawInput = readFileQuietly(getInputFile(day.getClass()));
-        execute(day, transformer.transform(rawInput));
+        execute(day, transformer, rawInput);
+    }
+
+    public void execute(Day<I, ?> day, InputTransformer<I> transformer, String rawInput) {
+        Stopwatch timerPart1 = Stopwatch.createStarted();
+        Object resultPart1 = day.partOne(transformer.transform(rawInput));
+        Stopwatch endPart1 = timerPart1.stop();
+        Stopwatch timerPart2 = Stopwatch.createStarted();
+        Object resultPart2 = day.partTwo(transformer.transform(rawInput));
+        Stopwatch endPart2 = timerPart2.stop();
+        System.out.println("result part one: " + resultPart1);
+        System.out.println("result part two: " + resultPart2);
+        System.out.printf("| [%s](./src/main/java/%s.java) | %s | %s |",
+                day.getClass().getSimpleName().replace("Day", "Day "),
+                day.getClass().getCanonicalName().replaceAll("\\.", "/"),
+                endPart1,
+                endPart2);
     }
 
     public void execute(Day<I, ?> day, I input) {
