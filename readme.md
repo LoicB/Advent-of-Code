@@ -1,4 +1,8 @@
-# 2022
+# 2023
+
+| Day                                                | Part One | Part Two |
+|----------------------------------------------------|----------|----------|
+| [Day 1](./src/main/java/aoc/loicb/y2023/Day1.java) | 29.01 ms | 42.12 ms |
 
 | Day                                                  | Part One | Part Two  |
 |------------------------------------------------------|----------|-----------|
@@ -21,7 +25,6 @@
 | [Day 17](./src/main/java/aoc/loicb/y2022/Day17.java) | 117.3 ms | 97.02 ms  |
 | [Day 18](./src/main/java/aoc/loicb/y2022/Day18.java) | 66.23 ms | 164.6 ms  |
 | [Day 19](./src/main/java/aoc/loicb/y2022/Day19.java) | 45.81 s  | 1.573 min |
-
 
 # 2021
 
