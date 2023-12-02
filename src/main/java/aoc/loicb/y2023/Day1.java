@@ -9,7 +9,7 @@ import java.util.Optional;
 import java.util.function.Function;
 
 public class Day1 implements Day<List<String>, Integer> {
-    private final static List<String> letters = List.of("one", "two", "three", "four", "five", "six", "seven", "eight", "nine");
+    private final static List<String> LETTERS = List.of("one", "two", "three", "four", "five", "six", "seven", "eight", "nine");
 
     public static void main(String[] args) {
         DayExecutor<List<String>> de = new DayExecutor<>(new InputToObjectList<>() {
@@ -62,7 +62,7 @@ public class Day1 implements Day<List<String>, Integer> {
             if (!numberFound) {
                 var letter = startsWithLetters(input.substring(index));
                 if (letter.isPresent()) {
-                    number = letters.indexOf(letter.get()) + 1;
+                    number = LETTERS.indexOf(letter.get()) + 1;
                     numberFound = true;
                 }
             }
@@ -72,6 +72,6 @@ public class Day1 implements Day<List<String>, Integer> {
     }
 
     private Optional<String> startsWithLetters(String input) {
-        return letters.stream().filter(input::startsWith).findFirst();
+        return LETTERS.stream().filter(input::startsWith).findFirst();
     }
 }
