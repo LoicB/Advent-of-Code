@@ -78,11 +78,24 @@ public class Day3 implements Day<char[][], Integer> {
         Map<Position, List<Integer>> indexes = indexing(schematic);
         return indexes
                 .keySet()
-                .stream().filter(position -> schematic[position.x()][position.y()] == '*')
+                .stream()
+                .filter(position -> isCorrectSymbol(schematic[position.x()][position.y()]))
                 .map(indexes::get)
-                .filter(integers -> integers.size() == 2).
-                mapToInt(integers -> integers.get(0) * integers.get(1))
+                .filter(this::isGearValid)
+                .mapToInt(this::gearRatio)
                 .sum();
+    }
+
+    private boolean isCorrectSymbol(Character symbol) {
+        return symbol == '*';
+    }
+
+    private boolean isGearValid(List<Integer> numbers) {
+        return numbers.size() == 2;
+    }
+
+    private int gearRatio(List<Integer> numbers) {
+        return numbers.get(0) * numbers.get(1);
     }
 
     record Position(int x, int y) {
