@@ -14,7 +14,7 @@ import java.util.stream.Collectors;
 
 public class Day4 implements Day<List<String>, Integer> {
 
-    private final Pattern p = Pattern.compile("\\d+");
+    private final static Pattern DIGIT_PATTERN = Pattern.compile("\\d+");
 
     public static void main(String[] args) {
         DayExecutor<List<String>> de = new DayExecutor<>(new InputToObjectList<>() {
@@ -59,7 +59,7 @@ public class Day4 implements Day<List<String>, Integer> {
     }
 
     private Set<Integer> getNumbers(String playedRepresentation) {
-        Matcher m = p.matcher(playedRepresentation);
+        Matcher m = DIGIT_PATTERN.matcher(playedRepresentation);
         Set<Integer> numbers = new HashSet<>();
         while (m.find()) {
             numbers.add(Integer.parseInt(m.group()));
