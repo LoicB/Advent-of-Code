@@ -48,11 +48,6 @@ public class Day6 implements Day<String, Long> {
 
     @Override
     public Long partTwo(String input) {
-        String[] line = input.split("\\r?\\n");
-        List<Long> times = getNumbers(line[0].replaceAll(" ", ""));
-        List<Long> distances = getNumbers(line[1].replaceAll(" ", ""));
-        return IntStream
-                .range(0, times.size()).mapToLong(index -> numberOfWaysBeatRecord(times.get(index), distances.get(index)))
-                .reduce(1, (a, b) -> a * b);
+        return partOne(input.replaceAll(" ", ""));
     }
 }
