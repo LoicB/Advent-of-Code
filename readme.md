@@ -10,6 +10,7 @@
 | [Day 6](./src/main/java/aoc/loicb/y2023/Day6.java) | 9.674 ms | 138.6 ms |
 | [Day 7](./src/main/java/aoc/loicb/y2023/Day7.java) | 64.00 ms | 32.70 ms |
 | [Day 8](./src/main/java/aoc/loicb/y2023/Day8.java) | 25.72 ms | 17.85 ms |
+| [Day 9](./src/main/java/aoc/loicb/y2023/Day9.java) | 72.30 ms | 23.91 ms |
 
 | Day                                                  | Part One | Part Two  |
 |------------------------------------------------------|----------|-----------|
