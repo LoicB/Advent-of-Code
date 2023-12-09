@@ -60,7 +60,7 @@ public class Day9 implements Day<List<List<Integer>>, Number> {
     private List<Integer> calculateDifferences(List<Integer> history) {
         return IntStream
                 .range(0, history.size() - 1)
-                .mapToObj(ndex -> history.get(ndex + 1) - history.get(ndex))
+                .mapToObj(index -> history.get(index + 1) - history.get(index))
                 .collect(Collectors.toList());
     }
 
