@@ -146,7 +146,7 @@ public class Day10 implements Day<String[], Integer> {
             for (int j = 0; j < cycle[i].length; j++) {
                 if (cycle[i][j]) {
                     currentWall.add(newIsland[i].charAt(j));
-                    if (isCrossIngWall(currentWall, newIsland[i].charAt(j))) {
+                    if (isCrossingWall(currentWall, newIsland[i].charAt(j))) {
                         adding = (adding + 1) % 2;
                         currentWall = new ArrayList<>();
                     }
@@ -171,7 +171,7 @@ public class Day10 implements Day<String[], Integer> {
         return cpt;
     }
 
-    private boolean isCrossIngWall(List<Character> currentWall, char current) {
+    private boolean isCrossingWall(List<Character> currentWall, char current) {
         return current == '|' || (currentWall.contains('7') && currentWall.contains('L') || (currentWall.contains('F') && currentWall.contains('J')));
     }
 
