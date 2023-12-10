@@ -27,6 +27,26 @@ public class Day10 implements Day<String[], Integer> {
         return max;
     }
 
+    private static List<Position> getPositions(Position current, String[] input) {
+        List<Position> next = new ArrayList<>();
+        if (current.x() > 0 && (input[current.x() - 1].charAt(current.y()) == 'F' || input[current.x() - 1].charAt(current.y()) == '7' || input[current.x() - 1].charAt(current.y()) == '|'))
+            next.add(new Position(current.x() - 1, current.y()));
+        if (input[current.x() + 1].charAt(current.y()) == 'L' || input[current.x() + 1].charAt(current.y()) == 'J' || input[current.x() + 1].charAt(current.y()) == '|')
+            next.add(new Position(current.x() + 1, current.y()));
+        if (current.y() > 0 && (input[current.x()].charAt(current.y() - 1) == 'F' || input[current.x()].charAt(current.y() - 1) == 'L' || input[current.x()].charAt(current.y() - 1) == '-'))
+            next.add(new Position(current.x(), current.y() - 1));
+        if (input[current.x()].charAt(current.y() + 1) == '7' || input[current.x()].charAt(current.y() + 1) == 'J' || input[current.x()].charAt(current.y() + 1) == '-')
+            next.add(new Position(current.x(), current.y() + 1));
+        return next;
+    }
+
+    boolean isInIsland(Position position, String[] input) {
+        if (position.x() < 0) return false;
+        if (position.y() < 0) return false;
+        if (position.x() > input.length) return false;
+        return position.y() <= input[position.x()].length();
+    }
+
     int[][] explore(String[] input) {
         Position startingPosition = findStartingPoint(input);
         LinkedList<Position> queue = new LinkedList<>();
@@ -48,34 +68,16 @@ public class Day10 implements Day<String[], Integer> {
                     .filter(position -> !history.contains(position))
                     .filter(position -> input[position.x()].charAt(position.y()) != '.')
                     .toList();
-            nextPositions.forEach(position -> {
-                distances[position.x()][position.y()] = Math.min(distances[position.x()][position.y()], distance + 1);
-            });
+            nextPositions.forEach(position -> distances[position.x()][position.y()] = Math.min(distances[position.x()][position.y()], distance + 1));
             queue.addAll(nextPositions);
         }
         return distances;
     }
 
-    boolean isInIsland(Position position, String[] input) {
-        if (position.x() < 0) return false;
-        if (position.y() < 0) return false;
-        if (position.x() > input.length) return false;
-        return position.y() <= input[position.x()].length();
-    }
-
     List<Position> findNextPositions(Position current, char direction, String[] input) {
         switch (direction) {
             case 'S' -> {
-                List<Position> next = new ArrayList<>();
-                if (current.x() > 0 && (input[current.x() - 1].charAt(current.y()) == 'F' || input[current.x() - 1].charAt(current.y()) == '7' || input[current.x() - 1].charAt(current.y()) == '|'))
-                    next.add(new Position(current.x() - 1, current.y()));
-                if (input[current.x() + 1].charAt(current.y()) == 'L' || input[current.x() + 1].charAt(current.y()) == 'J' || input[current.x() + 1].charAt(current.y()) == '|')
-                    next.add(new Position(current.x() + 1, current.y()));
-                if (current.y() > 0 && (input[current.x()].charAt(current.y() - 1) == 'F' || input[current.x()].charAt(current.y() - 1) == 'L' || input[current.x()].charAt(current.y() - 1) == '-'))
-                    next.add(new Position(current.x(), current.y() - 1));
-                if (input[current.x()].charAt(current.y() + 1) == '7' || input[current.x()].charAt(current.y() + 1) == 'J' || input[current.x()].charAt(current.y() + 1) == '-')
-                    next.add(new Position(current.x(), current.y() + 1));
-                return next;
+                return getPositions(current, input);
             }
             case 'F' -> {
                 return List.of(
