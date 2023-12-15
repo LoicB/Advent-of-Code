@@ -14,6 +14,7 @@
 | [Day 10](./src/main/java/aoc/loicb/y2023/Day10.java) | 243.8 ms | 106.7 ms |
 | [Day 11](./src/main/java/aoc/loicb/y2023/Day11.java) | 49.51 ms | 27.78 ms |
 | [Day 12](./src/main/java/aoc/loicb/y2023/Day12.java) | 149.7 ms | 265.4 ms |
+| [Day 13](./src/main/java/aoc/loicb/y2023/Day13.java) | 13.58 ms | 13.61 ms |
 | [Day 14](./src/main/java/aoc/loicb/y2023/Day14.java) | 15.96 ms | 119.7 ms |
 | [Day 15](./src/main/java/aoc/loicb/y2023/Day15.java) | 6.518 ms | 26.73 ms |
 
