@@ -59,7 +59,8 @@ class Day15Test {
         var sequence = "rn=1,cm-,qp=3,cm=2,qp-,pc=4,ot=9,ab=5,pc-,pc=6,ot=7";
         var day = new Day15();
         var boxes = day.buildBoxes(sequence);
-        assertEquals(2, boxes.get(0).getContent().size());
-        assertEquals(3, boxes.get(3).getContent().size());
+        System.out.println(boxes);
+        assertEquals(2, boxes.get(0).values().size());
+        assertEquals(3, boxes.get(3).values().size());
     }
 }
