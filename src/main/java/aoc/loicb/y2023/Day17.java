@@ -24,25 +24,25 @@ public class Day17 implements Day<List<List<Integer>>, Number> {
 
     @Override
     public Number partOne(List<List<Integer>> input) {
-        return findMinimumHeat(input, new StateMotionEngine(input, false), new Crucible(0, 0, Direction.Right, 0));
+        return findMinimumHeat(input, new SimpleMotionEngine(input), new Crucible(0, 0, Direction.Right, 0));
     }
 
     private Number findMinimumHeat(List<List<Integer>> input, StateMotionEngine stateMotionEngine, Crucible... startingCrucibles) {
-        PriorityQueue<State> pqueue = new PriorityQueue<>();
+        PriorityQueue<State> priorityQueue = new PriorityQueue<>();
         Set<Crucible> visited = new HashSet<>();
-        Arrays.stream(startingCrucibles).map(s -> new State(s, 0, null)).forEach(pqueue::add);
-        while (!pqueue.isEmpty()) {
-            State currentState = pqueue.poll();
+        Arrays.stream(startingCrucibles).map(s -> new State(s, 0, null)).forEach(priorityQueue::add);
+        while (!priorityQueue.isEmpty()) {
+            State currentState = priorityQueue.poll();
             if (!visited.contains(currentState.crucible())) {
 
                 visited.add(currentState.crucible());
                 List<State> nextSteps = stateMotionEngine.getNextStep(currentState);
                 for (State nextStep : nextSteps) {
                     Crucible crucible = nextStep.crucible();
-                    pqueue.add(nextStep);
+                    priorityQueue.add(nextStep);
                     if (crucible.position().x() == input.size() - 1
                             && crucible.position().y() == input.get(crucible.position().x()).size() - 1
-                            && (!stateMotionEngine.ultraCrucible() || nextStep.crucible().cpt() >= 4)) {
+                            && nextStep.crucible().cpt() >= stateMotionEngine.minimumMovements()) {
                         return nextStep.heat();
                     }
                 }
@@ -53,7 +53,7 @@ public class Day17 implements Day<List<List<Integer>>, Number> {
 
     @Override
     public Number partTwo(List<List<Integer>> input) {
-        return findMinimumHeat(input, new StateMotionEngine(input, true), new Crucible(0, 0, Direction.Right, 0), new Crucible(0, 0, Direction.Down, 0));
+        return findMinimumHeat(input, new UltraMotionEngine(input), new Crucible(0, 0, Direction.Right, 0), new Crucible(0, 0, Direction.Down, 0));
     }
 
     record Crucible(Position position, Direction direction, int cpt) {
@@ -62,15 +62,22 @@ public class Day17 implements Day<List<List<Integer>>, Number> {
         }
     }
 
-    record StateMotionEngine(List<List<Integer>> heatmap, boolean ultraCrucible) {
+    abstract static class StateMotionEngine {
+        private final List<List<Integer>> heatmap;
 
+        public StateMotionEngine(List<List<Integer>> heatmap) {
+            this.heatmap = heatmap;
+        }
+
+        abstract List<Crucible> getNextStep(Crucible crucible);
+
+        abstract int minimumMovements();
         public List<State> getNextStep(State state) {
-            return getNextStep(state.crucible(), this.ultraCrucible())
+            return getNextStep(state.crucible())
                     .stream()
                     .filter(crucible -> isInMap(crucible, heatmap))
                     .map(crucible -> getState(state, crucible)).toList();
         }
-
         private boolean isInMap(Crucible crucibleState, List<List<Integer>> map) {
             return crucibleState.position().x() >= 0
                     && crucibleState.position().x() < map.size()
@@ -83,32 +90,15 @@ public class Day17 implements Day<List<List<Integer>>, Number> {
             return new State(crucible, state.heat() + heatmap.get(crucible.position().x()).get(crucible.position().y()), state);
         }
 
-        private List<Crucible> getNextStep(Crucible crucible, boolean ultraCrucible) {
-            if (ultraCrucible) return getUltraCrucibleNextStep(crucible);
-            return getSimpleCrucibleNextStep(crucible);
-        }
-
-        private List<Crucible> getSimpleCrucibleNextStep(Crucible crucible) {
-            if (crucible.position().x() == 0 && crucible.position().y() == 0) return List.of(goStraight(crucible));
-            if (crucible.cpt() == 3) return List.of(turnLeft(crucible), turnRight(crucible));
-            return List.of(goStraight(crucible), turnLeft(crucible), turnRight(crucible));
-        }
-
-        private List<Crucible> getUltraCrucibleNextStep(Crucible crucible) {
-            if (crucible.cpt() < 4) return List.of(goStraight(crucible));
-            if (crucible.cpt() < 10) return List.of(goStraight(crucible), turnLeft(crucible), turnRight(crucible));
-            return List.of(turnLeft(crucible), turnRight(crucible));
-        }
-
-        private Crucible goStraight(Crucible currentStep) {
+        Crucible goStraight(Crucible currentStep) {
             return move(currentStep.position(), currentStep.direction(), currentStep.cpt() + 1);
         }
 
-        private Crucible turnLeft(Crucible currentStep) {
+        Crucible turnLeft(Crucible currentStep) {
             return move(currentStep.position(), turnLeft(currentStep.direction()), 1);
         }
 
-        private Crucible turnRight(Crucible currentStep) {
+        Crucible turnRight(Crucible currentStep) {
             return move(currentStep.position(), turnRight(currentStep.direction()), 1);
         }
 
@@ -138,6 +128,47 @@ public class Day17 implements Day<List<List<Integer>>, Number> {
                 case Right -> Direction.Down;
                 case Down -> Direction.Left;
             };
+        }
+
+    }
+
+    static class SimpleMotionEngine extends StateMotionEngine {
+
+        public SimpleMotionEngine(List<List<Integer>> heatmap) {
+            super(heatmap);
+        }
+
+        @Override
+        public List<Crucible> getNextStep(Crucible crucible) {
+            if (crucible.position().x() == 0 && crucible.position().y() == 0) return List.of(goStraight(crucible));
+            if (crucible.cpt() == 3) return List.of(turnLeft(crucible), turnRight(crucible));
+            return List.of(goStraight(crucible), turnLeft(crucible), turnRight(crucible));
+        }
+
+        @Override
+        int minimumMovements() {
+            return 0;
+        }
+
+
+    }
+
+    static class UltraMotionEngine extends StateMotionEngine {
+
+        public UltraMotionEngine(List<List<Integer>> heatmap) {
+            super(heatmap);
+        }
+
+        @Override
+        public List<Crucible> getNextStep(Crucible crucible) {
+            if (crucible.cpt() < 4) return List.of(goStraight(crucible));
+            if (crucible.cpt() < 10) return List.of(goStraight(crucible), turnLeft(crucible), turnRight(crucible));
+            return List.of(turnLeft(crucible), turnRight(crucible));
+        }
+
+        @Override
+        int minimumMovements() {
+            return 4;
         }
 
     }
