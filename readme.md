@@ -18,6 +18,7 @@
 | [Day 14](./src/main/java/aoc/loicb/y2023/Day14.java) | 15.96 ms | 119.7 ms |
 | [Day 15](./src/main/java/aoc/loicb/y2023/Day15.java) | 6.518 ms | 26.73 ms |
 | [Day 17](./src/main/java/aoc/loicb/y2023/Day17.java) | 1.085 s  | 2.244 s  |
+| [Day 18](./src/main/java/aoc/loicb/y2023/Day18.java) | 72.02 ms | 7.637 ms |
 
 | Day                                                  | Part One | Part Two  |
 |------------------------------------------------------|----------|-----------|
