@@ -33,6 +33,7 @@
 | [Day 17](./src/main/java/aoc/loicb/y2023/Day17.java) | 1.085 s  | 2.244 s  |
 | [Day 18](./src/main/java/aoc/loicb/y2023/Day18.java) | 72.02 ms | 7.637 ms |
 | [Day 19](./src/main/java/aoc/loicb/y2023/Day19.java) | 81.68 ms | 33.63 ms |
+| [Day 20](./src/main/java/aoc/loicb/y2023/Day20.java) | 280.0 ms | 871.8 ms |
 
 # 2022
 | Day                                                  | Part One | Part Two  |
