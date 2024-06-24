@@ -28,46 +28,53 @@ public class Day20 implements Day<List<String>, Number> {
     }
 
     List<Pulse> pressButton(int numberOfPress, List<String> input) {
-        var modules = createModules(input);
-        var flipFlop = createFlipFlopModuless(input);
-        var conjunction = createConjunctionModuless(input, modules);
+        var modulesMap = createModules(input);
+        var flipFlopMap = createFlipFlopModules(input);
+        var conjunctionMap = createConjunctionModules(input, modulesMap);
         List<Pulse> pulses = new ArrayList<>();
-        for (int i = 0; i < numberOfPress; i++) {
-            var queue = new LinkedList<Communication>();
-            queue.add(new Communication("button", "broadcaster", Pulse.LOW));
-            while (!queue.isEmpty()) {
-                var next = queue.poll();
-                var origin = next.from();
-                var key = next.to();
-                var pulse = next.pulse();
-                pulses.add(pulse);
-                var nextKeys = modules.get(key);
-                if (flipFlop.containsKey(key)) {
-                    Boolean current = flipFlop.get(key);
+
+        for (int press = 0; press < numberOfPress; press++) {
+            var communicationQueue = new LinkedList<Communication>();
+            communicationQueue.add(new Communication("button", "broadcaster", Pulse.LOW));
+
+            while (!communicationQueue.isEmpty()) {
+                var currentCommunication = communicationQueue.poll();
+                var originKey = currentCommunication.from();
+                var destinationKey = currentCommunication.to();
+                var currentPulse = currentCommunication.pulse();
+
+                pulses.add(currentPulse);
+
+                var nextKeys = modulesMap.get(destinationKey);
+
+                if (flipFlopMap.containsKey(destinationKey)) {
+                    Boolean currentState = flipFlopMap.get(destinationKey);
+
                     for (String nextKey : nextKeys) {
-                        if (pulse == Pulse.LOW) {
-                            queue.add(new Communication(key, nextKey, current ? Pulse.LOW : Pulse.HIGH));
-                            flipFlop.put(key, !current);
+                        if (currentPulse == Pulse.LOW) {
+                            communicationQueue.add(new Communication(destinationKey, nextKey, currentState ? Pulse.LOW : Pulse.HIGH));
+                            flipFlopMap.put(destinationKey, !currentState);
                         }
                     }
-                } else if (conjunction.containsKey(key)) {
+                } else if (conjunctionMap.containsKey(destinationKey)) {
                     for (String nextKey : nextKeys) {
-                        conjunction.get(key).put(origin, pulse);
-                        var nextPulse = conjunction.get(key).values().stream().allMatch(pulse1 -> pulse1 == Pulse.HIGH) ? Pulse.LOW : Pulse.HIGH;
-                        queue.add(new Communication(key, nextKey, nextPulse));
+                        conjunctionMap.get(destinationKey).put(originKey, currentPulse);
+                        var nextPulse = conjunctionMap.get(destinationKey).values().stream().allMatch(p -> p == Pulse.HIGH) ? Pulse.LOW : Pulse.HIGH;
+                        communicationQueue.add(new Communication(destinationKey, nextKey, nextPulse));
                     }
                 } else if (nextKeys != null && !nextKeys.isEmpty()) {
                     for (String nextKey : nextKeys) {
-                        queue.add(new Communication(key, nextKey, pulse));
+                        communicationQueue.add(new Communication(destinationKey, nextKey, currentPulse));
                     }
                 }
             }
         }
+
         return pulses;
     }
 
 
-    Map<String, Boolean> createFlipFlopModuless(List<String> input) {
+    Map<String, Boolean> createFlipFlopModules(List<String> input) {
         return input
                 .stream()
                 .filter(this::isFlipFlop)
@@ -76,7 +83,7 @@ public class Day20 implements Day<List<String>, Number> {
                         .toMap(string -> string, string -> Boolean.FALSE));
     }
 
-    Map<String, Map<String, Pulse>> createConjunctionModuless(List<String> input, Map<String, List<String>> modules) {
+    Map<String, Map<String, Pulse>> createConjunctionModules(List<String> input, Map<String, List<String>> modules) {
         return input
                 .stream()
                 .filter(this::isConjunction)
@@ -158,41 +165,45 @@ public class Day20 implements Day<List<String>, Number> {
     }
 
     int waitingForRx(List<String> input, int index) {
-        var modules = createModules(input);
-        var flipFlop = createFlipFlopModuless(input);
-        var conjunction = createConjunctionModuless(input, modules);
+        var modulesMap = createModules(input);
+        var flipFlopMap = createFlipFlopModules(input);
+        var conjunctionMap = createConjunctionModules(input, modulesMap);
         int pressCount = 0;
+
         while (true) {
             pressCount++;
-            var queue = new LinkedList<Communication>();
-            queue.add(new Communication("button", "broadcaster", Pulse.LOW));
-            while (!queue.isEmpty()) {
-                var next = queue.poll();
-                var origin = next.from();
-                var key = next.to();
-                var pulse = next.pulse();
-                var nextKeys = modules.get(key);
-                if (flipFlop.containsKey(key)) {
-                    Boolean current = flipFlop.get(key);
+            var communicationQueue = new LinkedList<Communication>();
+            communicationQueue.add(new Communication("button", "broadcaster", Pulse.LOW));
+
+            while (!communicationQueue.isEmpty()) {
+                var currentCommunication = communicationQueue.poll();
+                var originKey = currentCommunication.from();
+                var destinationKey = currentCommunication.to();
+                var currentPulse = currentCommunication.pulse();
+                var nextKeys = modulesMap.get(destinationKey);
+
+                if (flipFlopMap.containsKey(destinationKey)) {
+                    Boolean currentState = flipFlopMap.get(destinationKey);
+
                     for (String nextKey : nextKeys) {
-                        if (pulse == Pulse.LOW) {
-                            queue.add(new Communication(key, nextKey, current ? Pulse.LOW : Pulse.HIGH));
-                            flipFlop.put(key, !current);
+                        if (currentPulse == Pulse.LOW) {
+                            communicationQueue.add(new Communication(destinationKey, nextKey, currentState ? Pulse.LOW : Pulse.HIGH));
+                            flipFlopMap.put(destinationKey, !currentState);
                         }
                     }
-                } else if (conjunction.containsKey(key)) {
+                } else if (conjunctionMap.containsKey(destinationKey)) {
                     for (String nextKey : nextKeys) {
-                        conjunction.get(key).put(origin, pulse);
-                        var nextPulse = conjunction.get(key).values().stream().allMatch(pulse1 -> pulse1 == Pulse.HIGH) ? Pulse.LOW : Pulse.HIGH;
-                        queue.add(new Communication(key, nextKey, nextPulse));
+                        conjunctionMap.get(destinationKey).put(originKey, currentPulse);
+                        var nextPulse = conjunctionMap.get(destinationKey).values().stream().allMatch(p -> p == Pulse.HIGH) ? Pulse.LOW : Pulse.HIGH;
+                        communicationQueue.add(new Communication(destinationKey, nextKey, nextPulse));
 
-                        if (nextKey.equals("rx") && conjunction.get(key).get((new ArrayList<>(conjunction.get(key).keySet())).get(index)) == Pulse.HIGH) {
+                        if (nextKey.equals("rx") && conjunctionMap.get(destinationKey).get(new ArrayList<>(conjunctionMap.get(destinationKey).keySet()).get(index)) == Pulse.HIGH) {
                             return pressCount;
                         }
                     }
                 } else if (nextKeys != null && !nextKeys.isEmpty()) {
                     for (String nextKey : nextKeys) {
-                        queue.add(new Communication(key, nextKey, pulse));
+                        communicationQueue.add(new Communication(destinationKey, nextKey, currentPulse));
                     }
                 }
             }
