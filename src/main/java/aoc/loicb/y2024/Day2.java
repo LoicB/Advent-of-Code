@@ -28,10 +28,10 @@ public class Day2 implements Day<List<List<Integer>>, Long> {
     boolean checkReportSafety(List<Integer> levels) {
         boolean increasing = isIncreasing(levels.get(0), levels.get(1));
         int index = 0;
-        boolean safe = isProgresSafe(levels.get(index), levels.get(index + 1));
+        boolean safe = isProgressSafe(levels.get(index), levels.get(index + 1));
         while (index < levels.size() - 1 && safe) {
             safe = increasing == isIncreasing(levels.get(index), levels.get(index + 1))
-                    && isProgresSafe(levels.get(index), levels.get(index + 1));
+                    && isProgressSafe(levels.get(index), levels.get(index + 1));
             index++;
         }
         return safe;
@@ -41,7 +41,7 @@ public class Day2 implements Day<List<List<Integer>>, Long> {
         return a < b;
     }
 
-    private boolean isProgresSafe(int a, int b) {
+    private boolean isProgressSafe(int a, int b) {
         int diff = Math.abs(a - b);
         return diff > 0 && diff <= 3;
     }
@@ -54,38 +54,18 @@ public class Day2 implements Day<List<List<Integer>>, Long> {
     boolean checkReportSafetyDampener(List<Integer> levels) {
         boolean increasing = isIncreasing(levels.get(0), levels.get(1));
         int index = 0;
-        boolean safe = isProgresSafe(levels.get(index), levels.get(index + 1));
+        boolean safe = isProgressSafe(levels.get(index), levels.get(index + 1));
         while (index < levels.size() - 1 && safe) {
             safe = increasing == isIncreasing(levels.get(index), levels.get(index + 1))
-                    && isProgresSafe(levels.get(index), levels.get(index + 1));
+                    && isProgressSafe(levels.get(index), levels.get(index + 1));
             index++;
         }
         if (safe) return true;
-        for (int i = 0; i < levels.size(); i++) {
+        for (int i = Math.max(0, index - 1); i <= index + 1; i++) {
             var newList = new ArrayList<>(levels);
             newList.remove(i);
             if (checkReportSafety(newList)) return true;
         }
-//        var newList = new ArrayList<>(levels);
-//        newList.remove(index);
-//        if (!checkReportSafety(newList)) {
-//            System.out.println("!!!!!!!!!!!!!");
-//            System.out.println(levels);
-//            System.out.println(newList);
-//        }
-//        return checkReportSafety(newList);
         return false;
-//        boolean increasing = isIncreasing(levels.get(0), levels.get(1));
-//        int index = 0;
-//        int badLevels = 0;
-//        boolean safe = isProgresSafe(levels.get(index), levels.get(index + 1));
-//        while (index < levels.size() - 1 && safe && badLevels < 2) {
-//            System.out.println(badLevels);
-//            safe = increasing == isIncreasing(levels.get(index), levels.get(index + 1))
-//                    && isProgresSafe(levels.get(index), levels.get(index + 1));
-//            if (increasing != isIncreasing(levels.get(index), levels.get(index + 1))) badLevels++;
-//            index ++;
-//        }
-//        return badLevels < 2;
     }
 }

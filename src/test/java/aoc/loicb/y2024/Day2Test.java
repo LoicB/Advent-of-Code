@@ -11,7 +11,7 @@ import java.util.stream.Stream;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 class Day2Test {
-    private final List input = List.of(List.of(7, 6, 4, 2, 1),
+    private final List<List<Integer>> input = List.of(List.of(7, 6, 4, 2, 1),
             List.of(1, 2, 7, 8, 9),
             List.of(9, 7, 6, 2, 1),
             List.of(1, 3, 2, 4, 5),
