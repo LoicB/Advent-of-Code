@@ -50,11 +50,12 @@ public class Day4 implements Day<List<String>, Integer> {
     }
 
     private char getValueSafely(List<String> input, int x, int y) {
-        try {
-            return input.get(x).charAt(y);
-        } catch (Exception ex) {
-            return '.';
-        }
+        if (isOutside(input, x, y)) return '.';
+        return input.get(x).charAt(y);
+    }
+
+    private boolean isOutside(List<String> input, int x, int y) {
+        return x < 0 || x >= input.size() || y < 0 || y >= input.get(x).length();
     }
 
     @Override
