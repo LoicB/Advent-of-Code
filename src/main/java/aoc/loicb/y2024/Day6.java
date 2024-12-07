@@ -3,7 +3,9 @@ package aoc.loicb.y2024;
 import aoc.loicb.Day;
 import aoc.loicb.DayExecutor;
 
-import java.util.*;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
 import java.util.stream.IntStream;
 
 public class Day6 implements Day<char[][], Integer> {
@@ -21,55 +23,36 @@ public class Day6 implements Day<char[][], Integer> {
     @Override
     public Integer partOne(char[][] input) {
         Position position = findGard(input);
-        int count = 1;
         int gardX = position.x;
         int gardY = position.y;
-        int newX = gardX + moveX(input[gardY][gardX]);
-        int newY = gardY + moveY(input[gardY][gardX]);
-        while (isMap(input, newX, newY)) {
-            char gard = input[gardY][gardX];
-            if (input[newY][newX] == '.' || input[newY][newX] == 'X') {
-                count += input[newY][newX] == '.' ? 1 : 0;
-                input[newY][newX] = input[gardY][gardX];
-                input[gardY][gardX] = 'X';
-                gardX = newX;
-                gardY = newY;
-                newX = newX + moveX(gard);
-                newY = newY + moveY(gard);
-            } else if (input[newY][newX] == '#') {
-                input[gardY][gardX] = turn(input, gardX, gardY);
-                newX = gardX + moveX(input[gardY][gardX]);
-                newY = gardY + moveY(input[gardY][gardX]);
-            }
-        }
-        return count;
+        char gard = input[gardY][gardX];
+        input[gardY][gardX] = '.';
+        return moveGard(input, gardX, gardY, gard).size();
     }
 
-    private Optional<Integer> moveGard(char[][] map, int gardX, int gardY) {
-        int count = 1;
-        int newX = gardX + moveX(map[gardY][gardX]);
-        int newY = gardY + moveY(map[gardY][gardX]);
+    private Set<Position> moveGard(char[][] map, int gardX, int gardY, char gard) {
+        int newX = gardX + moveX(gard);
+        int newY = gardY + moveY(gard);
+        Set<Position> history = new HashSet<>();
         Set<GardState> cycleWatch = new HashSet<>();
         while (isMap(map, newX, newY)) {
-            char gard = map[gardY][gardX];
             if (!cycleWatch.add(new GardState(gardX, gardY, gard))) {
-                return Optional.empty();
+                return new HashSet<>();
             }
             if (map[newY][newX] == '.' || map[newY][newX] == 'X') {
-                count += map[newY][newX] == '.' ? 1 : 0;
-                map[newY][newX] = map[gardY][gardX];
-                map[gardY][gardX] = 'X';
+                history.add(new Position(gardX, gardY));
                 gardX = newX;
                 gardY = newY;
                 newX = newX + moveX(gard);
                 newY = newY + moveY(gard);
             } else if (map[newY][newX] == '#') {
-                map[gardY][gardX] = turn(map, gardX, gardY);
-                newX = gardX + moveX(map[gardY][gardX]);
-                newY = gardY + moveY(map[gardY][gardX]);
+                gard = turn(gard);
+                newX = gardX + moveX(gard);
+                newY = gardY + moveY(gard);
             }
         }
-        return Optional.of(count);
+        history.add(new Position(gardX, gardY));
+        return history;
     }
 
 
@@ -77,9 +60,8 @@ public class Day6 implements Day<char[][], Integer> {
         return y >= 0 && y < map.length && x >= 0 && x < map[y].length;
     }
 
-    private char turn(char[][] map, int x, int y) {
-        char c = map[y][x];
-        return switch (c) {
+    private char turn(char gard) {
+        return switch (gard) {
             default -> 0;
             case '^' -> '>';
             case '>' -> 'v';
@@ -115,42 +97,19 @@ public class Day6 implements Day<char[][], Integer> {
 
     @Override
     public Integer partTwo(char[][] input) {
-        char[][] copy = copyMap(input);
         Position startingPosition = findGard(input);
-        moveGard(copy, startingPosition.x(), startingPosition.y());
-        copy[startingPosition.y()][startingPosition.x()] = '.';
-        List<Position> cycleCandidates = getHistory(copy).stream()
+        char gard = input[startingPosition.y()][startingPosition.x()];
+        input[startingPosition.y()][startingPosition.x()] = '.';
+        Set<Position> history = moveGard(input, startingPosition.x(), startingPosition.y(), gard);
+        List<Position> cycleCandidates = history.stream()
                 .filter(position -> {
-                    char[][] newCopy = copyMap(input);
-                    newCopy[position.y()][position.x()] = '#';
-                    return moveGard(newCopy, startingPosition.x(), startingPosition.y()).isEmpty();
+                    input[position.y()][position.x()] = '#';
+                    boolean isCycling = moveGard(input, startingPosition.x(), startingPosition.y(), gard).isEmpty();
+                    input[position.y()][position.x()] = '.';
+                    return isCycling;
                 }).toList();
         return cycleCandidates.size();
     }
-
-    private List<Position> getHistory(char[][] map) {
-        List<Position> positions = new ArrayList<>();
-        for (int i = 0; i < map.length; i++) {
-            for (int j = 0; j < map[i].length; j++) {
-                if (map[i][j] == 'X' || map[i][j] == 'v' || map[i][j] == '<' || map[i][j] == '^' || map[i][j] == '>') {
-                    positions.add(new Position(j, i));
-                }
-            }
-        }
-        return positions;
-    }
-
-    private char[][] copyMap(char[][] map) {
-        char[][] copy = new char[map.length][];
-        for (int i = 0; i < map.length; i++) {
-            char[] line = map[i];
-            int aLength = line.length;
-            copy[i] = new char[aLength];
-            System.arraycopy(line, 0, copy[i], 0, aLength);
-        }
-        return copy;
-    }
-
     record Position(int x, int y) {
     }
 

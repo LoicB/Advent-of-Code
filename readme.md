@@ -1,12 +1,13 @@
 # 2024
 
-| Day                                                | Part One | Part Two |
-|----------------------------------------------------|----------|----------|
-| [Day 1](./src/main/java/aoc/loicb/y2024/Day1.java) | 119.4 ms | 31.75 ms |
-| [Day 2](./src/main/java/aoc/loicb/y2024/Day2.java) | 50.33 ms | 22.54 ms |
-| [Day 3](./src/main/java/aoc/loicb/y2024/Day3.java) | 13.95 ms | 17.33 ms |
-| [Day 4](./src/main/java/aoc/loicb/y2024/Day4.java) | 41.56 ms | 52.68 ms |
-| [Day 5](./src/main/java/aoc/loicb/y2024/Day5.java) | 162.0 ms | 425.0 ms |
+| Day                                                | Part One | Part Two  |
+|----------------------------------------------------|----------|-----------|
+| [Day 1](./src/main/java/aoc/loicb/y2024/Day1.java) | 119.4 ms | 31.75 ms  |
+| [Day 2](./src/main/java/aoc/loicb/y2024/Day2.java) | 50.33 ms | 22.54 ms  |
+| [Day 3](./src/main/java/aoc/loicb/y2024/Day3.java) | 13.95 ms | 17.33 ms  |
+| [Day 4](./src/main/java/aoc/loicb/y2024/Day4.java) | 41.56 ms | 52.68 ms  |
+| [Day 5](./src/main/java/aoc/loicb/y2024/Day5.java) | 162.0 ms | 425.0 ms  |
+| [Day 6](./src/main/java/aoc/loicb/y2024/Day6.java) | 147.9 ms | 2.953 s   |
 
 # 2023
 
