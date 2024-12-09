@@ -33,7 +33,7 @@ class Day9Test {
     void partOne() {
         var day = new Day9();
         var checksum = day.partOne(INPUT);
-        assertEquals(1928, checksum);
+        assertEquals(1928L, checksum);
     }
 
     @ParameterizedTest
@@ -49,7 +49,7 @@ class Day9Test {
     void moveFileBlocks(List<Integer> input, String expectedFile) {
         var day = new Day9();
         var files2 = day.buildFilesBlock(input);
-        day.moveFileBlocks2(files2);
+        day.moveFileBlocks(files2);
         assertEquals(expectedFile, Arrays.stream(files2).map(Object::toString).collect(Collectors.joining()));
     }
 
@@ -67,6 +67,6 @@ class Day9Test {
     void partTwo() {
         var day = new Day9();
         var checksum = day.partTwo(INPUT);
-        assertEquals(2858, checksum);
+        assertEquals(2858L, checksum);
     }
 }
