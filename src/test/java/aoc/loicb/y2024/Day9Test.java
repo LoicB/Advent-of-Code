@@ -29,20 +29,17 @@ class Day9Test {
                 Arguments.of(List.of(1, 2, 3, 4, 5), "022111222......")
         );
     }
-
     @Test
     void partOne() {
         var day = new Day9();
         var checksum = day.partOne(INPUT);
-        assertEquals(1928, checksum);
+        assertEquals(1928L, checksum);
     }
 
     @ParameterizedTest
     @MethodSource("buildFilesCaseProvider")
-    void buildFiles(List<Integer> input, String expectedFile) {
+    void buildFilesBlock(List<Integer> input, String expectedFile) {
         var day = new Day9();
-        var files = day.buildFiles(input);
-        assertEquals(expectedFile, day.printFiles(files));
         var files2 = day.buildFilesBlock(input);
         assertEquals(expectedFile, Arrays.stream(files2).map(Object::toString).collect(Collectors.joining()));
     }
@@ -51,16 +48,25 @@ class Day9Test {
     @MethodSource("moveFileBlocksCaseProvider")
     void moveFileBlocks(List<Integer> input, String expectedFile) {
         var day = new Day9();
-        var files = day.buildFiles(input);
-        day.moveFileBlocks(files);
-        assertEquals(expectedFile, day.printFiles(files));
         var files2 = day.buildFilesBlock(input);
-        day.moveFileBlocks2(files2);
+        day.moveFileBlocks(files2);
         assertEquals(expectedFile, Arrays.stream(files2).map(Object::toString).collect(Collectors.joining()));
     }
 
 
     @Test
+    void moveFileBlocksPartTwo() {
+        var day = new Day9();
+        var files = day.buildFilesBlock(INPUT);
+        day.moveFileBlocksPartTwo(files, INPUT.stream().mapToInt(value -> value).toArray());
+        assertEquals("00992111777.44.333....5555.6666.....8888..", Arrays.stream(files).map(Object::toString).collect(Collectors.joining()));
+    }
+
+
+    @Test
     void partTwo() {
+        var day = new Day9();
+        var checksum = day.partTwo(INPUT);
+        assertEquals(2858L, checksum);
     }
 }
