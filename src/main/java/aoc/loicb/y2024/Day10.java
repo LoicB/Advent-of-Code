@@ -3,8 +3,7 @@ package aoc.loicb.y2024;
 import aoc.loicb.Day;
 import aoc.loicb.DayExecutor;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.function.BiFunction;
 
 public class Day10 implements Day<int[][], Integer> {
 
@@ -25,7 +24,20 @@ public class Day10 implements Day<int[][], Integer> {
 
     @Override
     public Integer partOne(int[][] map) {
-        return findTrailheads(map).stream().mapToInt(trailhead -> explore(map, trailhead)).sum();
+        return findTrailheadsAndExplore(map, (x, y) -> explore(map, x, y, createVisitedMap(map)));
+    }
+
+
+    private int findTrailheadsAndExplore(int[][] map, BiFunction<Integer, Integer, Integer> explorer) {
+        int sum = 0;
+        for (int i = 0; i < map.length; i++) {
+            for (int j = 0; j < map[i].length; j++) {
+                if (map[i][j] == 0) {
+                    sum += explorer.apply(j, i);
+                }
+            }
+        }
+        return sum;
     }
 
     private boolean[][] createVisitedMap(int[][] map) {
@@ -38,11 +50,6 @@ public class Day10 implements Day<int[][], Integer> {
         }
         return visited;
     }
-
-    private int explore(int[][] map, Position trailhead) {
-        return explore(map, trailhead.x(), trailhead.y(), createVisitedMap(map));
-    }
-
     private int explore(int[][] map, int x, int y, boolean[][] visited) {
         visited[y][x] = true;
         if (map[y][x] == 9) return 1;
@@ -62,26 +69,9 @@ public class Day10 implements Day<int[][], Integer> {
         return sum;
     }
 
-    private List<Position> findTrailheads(int[][] map) {
-        List<Position> trailheads = new ArrayList<>();
-        for (int i = 0; i < map.length; i++) {
-            for (int j = 0; j < map[i].length; j++) {
-                if (map[i][j] == 0) {
-                    trailheads.add(new Position(j, i));
-                }
-            }
-        }
-        return trailheads;
-    }
-
     @Override
     public Integer partTwo(int[][] map) {
-        return findTrailheads(map).stream().mapToInt(trailhead -> explorePartTwo(map, trailhead)).sum();
-    }
-
-
-    private int explorePartTwo(int[][] map, Position trailhead) {
-        return explore(map, trailhead.x(), trailhead.y());
+        return findTrailheadsAndExplore(map, (x, y) -> explore(map, x, y));
     }
 
     private int explore(int[][] map, int x, int y) {
@@ -100,8 +90,5 @@ public class Day10 implements Day<int[][], Integer> {
             sum += explore(map, x + 1, y);
         }
         return sum;
-    }
-
-    record Position(int x, int y) {
     }
 }
