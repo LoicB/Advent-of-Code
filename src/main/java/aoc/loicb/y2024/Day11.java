@@ -119,12 +119,16 @@ public class Day11 implements Day<List<Long>, Number> {
             }
         }
         return size;
+//        long size = 0L;
+//        for (Long stone : stones) {
+//            size += quickBlink(stone, 0);
+//        }
+//        return size;
     }
-
 
     private Long quickBlink(Long stone, int blinkCount) {
         if (blinkCount == 75) return 1L;
-        if (stone == 0) return quickBlink(1, blinkCount + 1);
+        if (stone == 0) return quickBlink(1L, blinkCount + 1);
         int numberOfDigits = numDigits(stone);
         if (numberOfDigits % 2 == 0) {
             int splitLevel = numberOfDigits / 2;
