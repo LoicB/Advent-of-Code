@@ -4,9 +4,7 @@ import aoc.loicb.Day;
 import aoc.loicb.DayExecutor;
 import aoc.loicb.InputToObjectList;
 
-import java.util.Arrays;
-import java.util.List;
-import java.util.Scanner;
+import java.util.*;
 
 public class Day14 implements Day<List<String>, Integer> {
     public static void main(String[] args) {
@@ -33,7 +31,6 @@ public class Day14 implements Day<List<String>, Integer> {
     int calculateSafetyFactory(List<String> input, int tilesWide, int tilesTall) {
         var robots = input.stream().map(Robot::fromString).toList();
         printRobots(robots, tilesWide, tilesTall);
-        moveRobot(robots.get(0), tilesWide, tilesTall, 100);
         var positions = robots.stream().map(robot -> moveRobot(robot, tilesWide, tilesTall, 100)).toList();
 //        printPositions(positions, tilesWide, tilesTall);
         return getSafetyScore(positions, tilesWide, tilesTall).safetyFactor();
@@ -76,20 +73,13 @@ public class Day14 implements Day<List<String>, Integer> {
         return position.x() > tilesWide / 2 && position.y() > tilesTall / 2;
     }
 
-    private void moveRobot(Robot robot, int tilesWide, int tilesTall, int numberOfMove) {
-        int newX = Math.floorMod(robot.position()[0] + numberOfMove * robot.velocity().x(), tilesWide);
-        int newY = Math.floorMod(robot.position()[1] + numberOfMove * robot.velocity().y(), tilesTall);
-        robot.position()[0] = newX;
-        robot.position()[1] = newY;
-    }
-
-    private Position moveRobot2(Robot2 robot, int tilesWide, int tilesTall, int numberOfMove) {
+    private Position moveRobot(Robot robot, int tilesWide, int tilesTall, int numberOfMove) {
         int newX = Math.floorMod(robot.position().x() + numberOfMove * robot.velocity().x(), tilesWide);
         int newY = Math.floorMod(robot.position().y() + numberOfMove * robot.velocity().y(), tilesTall);
         return new Position(newX, newY);
     }
 
-    private Position moveRobot2(Position position, Velocity velocity, int tilesWide, int tilesTall, int numberOfMove) {
+    private Position moveRobot(Position position, Velocity velocity, int tilesWide, int tilesTall, int numberOfMove) {
         int newX = Math.floorMod(position.x() + numberOfMove * velocity.x(), tilesWide);
         int newY = Math.floorMod(position.y() + numberOfMove * velocity.y(), tilesTall);
         return new Position(newX, newY);
@@ -99,7 +89,6 @@ public class Day14 implements Day<List<String>, Integer> {
     private void printRobots(List<Robot> robots, int tilesWide, int tilesTall) {
         printPositions(robots.stream().map(Robot::position).toList(), tilesWide, tilesTall);
     }
-
     private void printPositions(List<Position> positions, int tilesWide, int tilesTall) {
         int[][] map = new int[tilesTall][];
         for (int i = 0; i < map.length; i++) {
@@ -117,34 +106,26 @@ public class Day14 implements Day<List<String>, Integer> {
     }
 
 
+
     @Override
     public Integer partTwo(List<String> input) {
         var robots = input.stream().map(Robot::fromString).toList();
         boolean keepGoing = true;
         int count = 0;
-        int min1 = Integer.MAX_VALUE;
-        int min2 = Integer.MAX_VALUE;
-        int min3 = Integer.MAX_VALUE;
-        int min4 = Integer.MAX_VALUE;
+        int max = 0;
         while (keepGoing) {
             robots = robots.stream().map(robot -> new Robot(
                     moveRobot(robot, 101, 103, 1),
                     robot.velocity())).toList();
-            var score = getSafetyScore(robots.stream().map(Robot::position).toList(), 101, 103);
+//            var score = getSafetyScore(robots.stream().map(Robot::position).toList(), 101, 103);
 //            keepGoing = score.topLeft() != 0 && score.topRight() != 0 && score.bottomLeft() != 0 && score.bottomRight() != 0;
-            var bool1 = min1 > score.topLeft();
-            if (bool1) min1 = score.topLeft();
-            var bool2 = min2 > score.topRight();
-            if (bool2) min2 = score.topRight();
-            var bool3 = min3 > score.bottomLeft();
-            if (bool3) min3 = score.bottomLeft();
-            var bool4 = min4 > score.bottomRight();
-            if (bool4) min4 = score.bottomRight();
-            if (bool1 || bool2 || bool3 || bool4) {
-
+            var lines = countLines(robots.stream().map(Robot::position).toList());
+            var bool1 = max < lines;
+            if (bool1) {
+                max = lines;
                 System.out.println(count);
                 printRobots(robots, 101, 103);
-//                keepGoing = false;
+                keepGoing = count < 1000;
             }
             count++;
         }
@@ -157,6 +138,20 @@ public class Day14 implements Day<List<String>, Integer> {
 //        }
         return count;
     }
+
+    private int countLines(List<Position> positions) {
+        Set<Position> savedPosition = new HashSet<>(positions);
+        int count = 0;
+        for (Position position : positions) {
+            if (savedPosition.contains(new Position(position.x() - 1, position.y()))) count++;
+            if (savedPosition.contains(new Position(position.x(), position.y() - 1))) count++;
+            if (savedPosition.contains(new Position(position.x() + 1, position.y()))) count++;
+            if (savedPosition.contains(new Position(position.x(), position.y() - 1))) count++;
+        }
+        return count;
+
+    }
+
 
     private boolean isTreeCandidate(List<Robot> robots, int tilesWide, int tilesTall) {
         return robots
@@ -173,18 +168,7 @@ public class Day14 implements Day<List<String>, Integer> {
 
     }
 
-    record Robot(int[] position, Velocity velocity) {
-        static Robot fromString(String input) {
-            Scanner in = new Scanner(input).useDelimiter("[^\\-0-9]+");
-            return
-                    new Robot(
-                            new int[]{in.nextInt(), in.nextInt()},
-                            new Velocity(in.nextInt(), in.nextInt()));
-        }
-
-    }
-
-    record Robot2(Position position, Velocity velocity) {
+    record Robot(Position position, Velocity velocity) {
         static Robot fromString(String input) {
             Scanner in = new Scanner(input).useDelimiter("[^\\-0-9]+");
             return
