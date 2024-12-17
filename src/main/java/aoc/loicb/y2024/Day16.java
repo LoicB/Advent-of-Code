@@ -5,6 +5,7 @@ import aoc.loicb.DayExecutor;
 import aoc.loicb.InputToObjectList;
 
 import java.util.*;
+import java.util.stream.Collectors;
 
 public class Day16 implements Day<List<String>, Integer> {
 
@@ -202,9 +203,6 @@ public class Day16 implements Day<List<String>, Integer> {
         return map.get(y).charAt(x) == '#';
     }
 
-    // 740 too high
-    // 461 too low
-    // 606 too high
     @Override
     public Integer partTwo(List<String> map) {
         return navigate2(map);
@@ -236,13 +234,14 @@ public class Day16 implements Day<List<String>, Integer> {
         int max = navigate(map);
         System.out.println(max);
         LinkedList<ReindeerSuperStatus> queue = new LinkedList<>();
-        Map<Position, ReindeerSuperStatus> visited = new HashMap<>();
+        Set<ReindeerSuperStatus> visited = new HashSet<>();
+//        Map<Position, ReindeerSuperStatus> visited = new HashMap<>();
         Map<ReindeerSuperStatus, List<ReindeerSuperStatus>> parent = new HashMap<>();
         Map<Position, List<Position>> posParent = new HashMap<>();
         Map<Position, Integer> positionToScore = new HashMap<>();
         var fromPos = findStartingPosition(map);
         var from = new ReindeerSuperStatus('>', 0, fromPos.x(), fromPos.y());
-        visited.put(from.position(), from);
+        visited.add(from);
 
         positionToScore.put(fromPos, 0);
         var to = findEndingPosition(map);
@@ -261,10 +260,10 @@ public class Day16 implements Day<List<String>, Integer> {
 //            System.out.println(next);
 //            System.out.println("!!!!!!!!!!");
             for (ReindeerSuperStatus node : next) {
-                if (!visited.containsKey(node.position())
+                if (!visited.contains(node)
 //                        || node.score() < visited.get(node.position()).score()
                 ) {
-                    visited.put(node.position(), node);
+                    visited.add(node);
                     queue.add(node);
 //                    var listNext = parent.getOrDefault(node, new ArrayList<>());
                     List<ReindeerSuperStatus> listNext = new ArrayList<>();
@@ -294,13 +293,25 @@ public class Day16 implements Day<List<String>, Integer> {
 //        System.out.println(posParent.get(new Position(15, 5)));
 //        System.out.println(posParent.get(new Position(15, 6)));
 //        System.out.println(posParent.get(new Position(15, 7)));
-        System.out.println(visited.get(to));
-//        var all = parent.keySet().stream().filter(reindeerStatus -> map.get(reindeerStatus.y()).charAt(reindeerStatus.x()) == 'E').toList();
-//        System.out.println(all);
-//        System.out.println(countSteps(parent, all.get(0)));
-        var pos = getSteps(posParent, to);
+//        System.out.println(visited.get(to));
+        var all = parent.keySet().stream().filter(reindeerStatus -> map.get(reindeerStatus.y()).charAt(reindeerStatus.x()) == 'E').toList();
+        System.out.println(all);
+        var pos = all
+                .stream()
+                .map(reindeerSuperStatus -> getSteps(parent, reindeerSuperStatus))
+                .flatMap(Set::stream)
+                .collect(Collectors.toSet());
         printAll(map, pos);
-        return countSteps(posParent, to);
+        return (int) all
+                .stream()
+                .map(reindeerSuperStatus -> getSteps(parent, reindeerSuperStatus))
+                .flatMap(Set::stream)
+                .distinct()
+                .count();
+//        System.out.println(countSteps(parent, all.get(0)));
+//        var pos = getSteps(posParent, to);
+//        printAll(map, pos);
+//        return countSteps(posParent, to);
     }
 
     void printAll(List<String> map, Set<Position> positions) {
@@ -434,6 +445,23 @@ public class Day16 implements Day<List<String>, Integer> {
         LinkedList<Position> queue = new LinkedList<>();
         queue.add(finalPlace);
         Set<Position> history = new HashSet<>();
+        Set<Position> positions = new HashSet<>();
+//        System.out.println(finalPlace);
+        while (!queue.isEmpty()) {
+            var current = queue.poll();
+//            System.out.println(current);
+//            System.out.println(map.get(current));
+            var pos = new Position(current.x(), current.y());
+            positions.add(pos);
+            if (history.add(current) && map.containsKey(current)) queue.addAll(map.get(current));
+        }
+        return positions;
+    }
+
+    private Set<Position> getSteps(Map<ReindeerSuperStatus, List<ReindeerSuperStatus>> map, ReindeerSuperStatus finalPlace) {
+        LinkedList<ReindeerSuperStatus> queue = new LinkedList<>();
+        queue.add(finalPlace);
+        Set<ReindeerSuperStatus> history = new HashSet<>();
         Set<Position> positions = new HashSet<>();
 //        System.out.println(finalPlace);
         while (!queue.isEmpty()) {
