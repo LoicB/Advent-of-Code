@@ -6,6 +6,7 @@ import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
 
 import java.util.List;
+import java.util.Set;
 import java.util.stream.Stream;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -20,18 +21,12 @@ class Day21Test {
             "379A"
     );
 
-    private static Stream<Arguments> createPathCaseProvider() {
+    private static Stream<Arguments> createPathsCaseProvider() {
         return Stream.of(
-                Arguments.of(new Position(2, 3), new Position(1, 3), "<"),
-                Arguments.of(new Position(1, 3), new Position(1, 2), "^"),
-                Arguments.of(new Position(1, 2), new Position(2, 0), ">^^"),
-                Arguments.of(new Position(2, 0), new Position(2, 3), "vvv")
-        );
-    }
-
-    private static Stream<Arguments> createPath2CaseProvider() {
-        return Stream.of(
-                Arguments.of(new Position(2, 0), new Position(1, 1), "<v")
+                Arguments.of(new Position(2, 3), new Position(1, 3), Set.of("<")),
+                Arguments.of(new Position(1, 3), new Position(1, 2), Set.of("^")),
+                Arguments.of(new Position(1, 2), new Position(2, 0), Set.of(">^^", "^>^", "^^>")),
+                Arguments.of(new Position(2, 0), new Position(2, 3), Set.of("vvv"))
         );
     }
 
@@ -53,21 +48,11 @@ class Day21Test {
     }
 
     @ParameterizedTest
-    @MethodSource("createPathCaseProvider")
-    void createPath(Position from, Position to, String expectedPath) {
+    @MethodSource("createPathsCaseProvider")
+    void createPaths(Position from, Position to, Set<String> expectedPaths) {
         var day = new Day21();
-        var path = day.createPath(from, to, Day21.Keypad.NumericKeypad());
-        assertEquals(expectedPath, path);
-    }
-
-    //calculatePathComplexity
-
-    @ParameterizedTest
-    @MethodSource("createPath2CaseProvider")
-    void createPath2(Position from, Position to, String expectedPath) {
-        var day = new Day21();
-        var path = day.createPath(from, to, Day21.Keypad.DirectionalKeypad());
-        assertEquals(expectedPath, path);
+        var paths = day.createPaths(from, to, Day21.Keypad.NumericKeypad());
+        assertEquals(expectedPaths, paths);
     }
 
     @ParameterizedTest
@@ -82,6 +67,6 @@ class Day21Test {
     void partTwo() {
         var day = new Day21();
         var complexity = day.partTwo(input);
-        assertEquals(126384, complexity);
+        assertEquals(154115708116294L, complexity);
     }
 }
