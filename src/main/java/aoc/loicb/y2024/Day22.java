@@ -48,29 +48,28 @@ public class Day22 implements Day<List<Integer>, Number> {
 
 
     @Override
-    public Long partTwo(List<Integer> input) {
+    public Integer partTwo(List<Integer> input) {
         var indexes = input.stream().map(this::createBananaChangeIndex).toList();
         var changes = indexes.stream().map(Map::keySet).map(ArrayList::new).flatMap(List::stream).distinct().toList();
-        return changes.stream().mapToLong(sequence -> calculateNumberOfBananas(sequence, indexes)).max().orElse(0);
+        return changes.stream().mapToInt(sequence -> calculateNumberOfBananas(sequence, indexes)).max().orElse(0);
     }
 
-    private long calculateNumberOfBananas(Changes sequence, List<Map<Changes, Long>> indexes) {
-        return indexes.stream().mapToLong(index -> calculateNumberOfBananas(sequence, index)).sum();
-
+    private int calculateNumberOfBananas(Changes sequence, List<Map<Changes, Integer>> indexes) {
+        return indexes.stream().mapToInt(index -> calculateNumberOfBananas(sequence, index)).sum();
     }
 
-    private long calculateNumberOfBananas(Changes sequence, Map<Changes, Long> index) {
-        return index.getOrDefault(sequence, 0L);
+    private int calculateNumberOfBananas(Changes sequence, Map<Changes, Integer> index) {
+        return index.getOrDefault(sequence, 0);
     }
 
 
-    Map<Changes, Long> createBananaChangeIndex(long secretNumber) {
+    Map<Changes, Integer> createBananaChangeIndex(long secretNumber) {
         return createBananaChangeIndex(secretNumber, 2000);
     }
 
-    Map<Changes, Long> createBananaChangeIndex(long secretNumber, int indexSize) {
-        Map<Changes, Long> changesIndex = new HashMap<>();
-        long val1, val2 = Long.MIN_VALUE, val3 = Long.MIN_VALUE, val4 = Long.MIN_VALUE;
+    Map<Changes, Integer> createBananaChangeIndex(long secretNumber, int indexSize) {
+        Map<Changes, Integer> changesIndex = new HashMap<>();
+        int val1, val2 = Integer.MIN_VALUE, val3 = Integer.MIN_VALUE, val4 = Integer.MIN_VALUE;
         var index = 0;
         var currentNumber = secretNumber;
         while (index++ < indexSize) {
@@ -78,9 +77,9 @@ public class Day22 implements Day<List<Integer>, Number> {
             val1 = val2;
             val2 = val3;
             val3 = val4;
-            val4 = newNumber % 10 - currentNumber % 10;
+            val4 = (int) (newNumber % 10 - currentNumber % 10);
             if (index >= 4) {
-                var price = newNumber % 10;
+                var price = (int) (newNumber % 10);
                 var sequence = new Changes(val1, val2, val3, val4);
                 if (!changesIndex.containsKey(sequence)) {
                     changesIndex.put(sequence, price);
