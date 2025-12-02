@@ -3,6 +3,7 @@
 | Day                                                | Part One | Part Two |
 |----------------------------------------------------|----------|----------|
 | [Day 1](./src/main/java/aoc/loicb/y2025/Day1.java) | 33.98 ms | 45.62 ms |
+| [Day 2](./src/main/java/aoc/loicb/y2025/Day2.java) | 472.8 ms | 434.3 ms |
 
 # 2024
 
