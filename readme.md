@@ -1,14 +1,15 @@
 # 2025
 
-| Day                                                | Part One | Part Two |
-|----------------------------------------------------|----------|----------|
-| [Day 1](./src/main/java/aoc/loicb/y2025/Day1.java) | 33.98 ms | 45.62 ms |
-| [Day 2](./src/main/java/aoc/loicb/y2025/Day2.java) | 472.8 ms | 434.3 ms |
-| [Day 3](./src/main/java/aoc/loicb/y2025/Day3.java) | 24.89 ms | 6.219 ms |
-| [Day 4](./src/main/java/aoc/loicb/y2025/Day4.java) | 36.81 ms | 176.5 ms |
-| [Day 5](./src/main/java/aoc/loicb/y2025/Day5.java) | 35.63 ms | 19.37 ms |
-| [Day 6](./src/main/java/aoc/loicb/y2025/Day6.java) | 106.7 ms | 11.04 ms |
-| [Day 7](./src/main/java/aoc/loicb/y2025/Day7.java) | 121.5 ms | 34.21 ms |
+| Day                                                  | Part One | Part Two |
+|------------------------------------------------------|----------|----------|
+| [Day 1](./src/main/java/aoc/loicb/y2025/Day1.java)   | 33.98 ms | 45.62 ms |
+| [Day 2](./src/main/java/aoc/loicb/y2025/Day2.java)   | 472.8 ms | 434.3 ms |
+| [Day 3](./src/main/java/aoc/loicb/y2025/Day3.java)   | 24.89 ms | 6.219 ms |
+| [Day 4](./src/main/java/aoc/loicb/y2025/Day4.java)   | 36.81 ms | 176.5 ms |
+| [Day 5](./src/main/java/aoc/loicb/y2025/Day5.java)   | 35.63 ms | 19.37 ms |
+| [Day 6](./src/main/java/aoc/loicb/y2025/Day6.java)   | 106.7 ms | 11.04 ms |
+| [Day 7](./src/main/java/aoc/loicb/y2025/Day7.java)   | 121.5 ms | 34.21 ms |
+| [Day 11](./src/main/java/aoc/loicb/y2025/Day11.java) | 20.64 ms | 26.24 ms |
 
 # 2024
 
@@ -58,6 +59,7 @@
 | [Day 20](./src/main/java/aoc/loicb/y2023/Day20.java) | 280.0 ms | 871.8 ms |
 
 # 2022
+
 | Day                                                  | Part One | Part Two  |
 |------------------------------------------------------|----------|-----------|
 | [Day 1](./src/main/java/aoc/loicb/y2022/Day1.java)   | 23.63 ms | 5.607 ms  |
@@ -81,6 +83,7 @@
 | [Day 19](./src/main/java/aoc/loicb/y2022/Day19.java) | 45.81 s  | 1.573 min |
 
 # 2021
+
 | Day                                                  | Part One | Part Two |
 |------------------------------------------------------|----------|----------|
 | [Day 1](./src/main/java/aoc/loicb/y2021/Day1.java)   | 345.7 μs | 759.2 μs |
@@ -107,6 +110,7 @@
 | [Day 22](./src/main/java/aoc/loicb/y2021/Day22.java) | 47.49 ms | 169.1 ms |
 
 # 2015
+
 | Day                                                  | Part One | Part Two |
 |------------------------------------------------------|----------|----------|
 | [Day 1](./src/main/java/aoc/loicb/y2015/Day1.java)   | 4.816 ms | 160.5 μs |
