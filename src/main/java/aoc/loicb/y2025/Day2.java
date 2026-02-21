@@ -3,6 +3,7 @@ package aoc.loicb.y2025;
 import aoc.loicb.Day;
 import aoc.loicb.DayExecutor;
 import aoc.loicb.InputToObjectList;
+import aoc.loicb.y2025.tools.Range;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -104,7 +105,4 @@ public class Day2 implements Day<List<Range>, Number> {
         }
         return true;
     }
-}
-
-record Range(long from, long to) {
 }
